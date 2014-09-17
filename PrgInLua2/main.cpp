@@ -25,7 +25,9 @@ int main()
 	//testcall_va(L);		// 25.4
 	//testCFunc(L);			// 26.1
 	//testMapFunc(L);		// 27.1
-	testSplitFunc(L);		// 27.2
+	//testSplitFunc(L);		// 27.2
+	test28_1(L);
+
 
 	lua_close(L);
 	return 0;

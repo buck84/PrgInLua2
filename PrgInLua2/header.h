@@ -17,3 +17,6 @@ extern void testCFunc(lua_State *L);
 // 27
 extern void testMapFunc(lua_State *L);
 extern void testSplitFunc(lua_State *L);
+
+// 28
+extern void test28_1(lua_State *L);
