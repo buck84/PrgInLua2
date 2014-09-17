@@ -43,9 +43,6 @@ static int newarray(lua_State *L)
 	for(i=0; i<=I_WORD(n-1); i++)
 		a->values[i] = 0;
 
-	luaL_getmetatable(L, "LuaBook.array");
-	lua_setmetatable(L, -2);
-
 	return 1;
 }
 
@@ -94,7 +91,6 @@ static const struct luaL_Reg arraylib[] =
 
 int luaopen_array(lua_State *L)
 {
-	luaL_newmetatable(L, "LuaBook.array");
 	luaL_register(L, "array", arraylib);
 	return 1;
 }
