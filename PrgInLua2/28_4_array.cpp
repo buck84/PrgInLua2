@@ -23,6 +23,8 @@ extern "C" {
 }
 
 #include <limits.h>
+
+namespace luabook_28_4 {
 #define BITS_PER_WORD (CHAR_BIT*sizeof(unsigned int))
 #define I_WORD(i) ((unsigned int)(i)/BITS_PER_WORD)
 #define I_BIT(i) (1<<((unsigned int)(i)%BITS_PER_WORD))
@@ -89,75 +91,75 @@ static int getarray(lua_State *L)
 
 static int getsize(lua_State *L)
 {
-	NumArray *a = (NumArray*)lua_touserdata(L, 1);
-	luaL_argcheck(L, a!=NULL, 1, "'array' expected");
+	NumArray *a = checkarray(L);
 	lua_pushinteger(L, a->size);
 	return 1;
 }
 
-static const struct luaL_Reg arraylib[] = 
+int array2string(lua_State *L)
+{
+	NumArray *a = checkarray(L);
+	lua_pushfstring(L, "array(%d)", a->size);
+	return 1;
+}
+
+static const struct luaL_Reg arraylib_f[] = 
 {
 	{"new", newarray},
+	{NULL, NULL},
+};
+
+static const struct luaL_Reg arraylib_m[] = 
+{
+	{"__tostring", array2string},
 	{"set", setarray},
 	{"get", getarray},
 	{"size", getsize},
+	{"__newindex", setarray},
+	{"__index", getarray},
+	{"__len", getsize},
 	{NULL, NULL},
 };
 
 int luaopen_array(lua_State *L)
 {
-	luaL_newmetatable(L, "LuaBook.array");
-	luaL_register(L, "array", arraylib);
+	luaL_newmetatable(L, "LuaBook.array");	// LuaBook.array
+	lua_pushvalue(L, -1);					// LuaBook.array LuaBook.array
+	lua_setfield(L, -2, "__index");			// LuaBook.array(__index) LuaBook.array
+
+	luaL_register(L, NULL, arraylib_m);		// LuaBook.array(__index) LuaBook.array(arraylib_m)
+	luaL_register(L, "array", arraylib_f);
 	return 1;
 }
 
-// 打印堆栈
-void stackDump(lua_State *L)
+/*
+lua中设置metatable，需要用test28_2里面测试
+28_4_1.lua
+local metaarray = getmetatable(array.new(1))
+metaarray.__index = array.get
+metaarray.__newindex = array.set
+metaarray.__len = array.size
+a = array.new(1000)
+a[10] = true
+print(a[10])
+print(#a)
+
+c代码中设置
+28_4_2.lua
+a = array.new(1000)
+a[10] = true
+print(a[10])
+print(#a)
+
+*/
+
+
+void test28_4(lua_State *L)
 {
-	int i;
-	int top = lua_gettop(L);
-	for (i=1; i<=top; i++)
-	{
-		int t = lua_type(L, i);
-		switch(t)
-		{
-		case LUA_TSTRING:
-			{
-				printf("'%s'", lua_tostring(L, i));
-				break;
-			}
-		case LUA_TBOOLEAN:
-			{
-				printf(lua_toboolean(L, i) ? "true" : "false");
-				break;
-			}
-		case LUA_TNUMBER:
-			{
-				printf("%g", lua_tonumber(L, i));
-				break;
-			}
-		default:
-			{
-				printf("%s", lua_typename(L, t));
-				break;
-			}
-			printf(" ");
-		}
-		printf("\n");
-	}
-	printf("\n");
+	luaopen_array(L);
+	
+	if(luaL_loadfile(L, "28_4_2.lua") || lua_pcall(L, 0, 0, 0))
+		printf("cannot run config. file:%s\n", lua_tostring(L, -1));
 }
 
-// main
-int main()
-{
-	lua_State *L = luaL_newstate();
-	luaL_openlibs(L);
-	
-	luaopen_array(L);
-	if(luaL_loadfile(L, "func.lua") || lua_pcall(L, 0, 0, 0))
-		printf("run func.lua error");
-
-	lua_close(L);
-	return 0;
 }

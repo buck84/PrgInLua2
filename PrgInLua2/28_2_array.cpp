@@ -110,11 +110,23 @@ int luaopen_array(lua_State *L)
 	return 1;
 }
 
+/*
+28_2.lua
+与28_1.lua相同只是输出结果会报错
+a = array.new(1000)
+print(a)
+print(array.size(a))
+for i=1,1000 do
+    array.set(a,i,i%5==0)
+end
+print(array.get(io.stdin,10))
+print(array.get(a,11))
+*/
 void test28_2(lua_State *L)
 {
 	luaopen_array(L);
 	
-	if(luaL_loadfile(L, "28_2.lua") || lua_pcall(L, 0, 0, 0))
+	if(luaL_loadfile(L, "28_4_1.lua") || lua_pcall(L, 0, 0, 0))	// "28_2.lua"
 		printf("cannot run config. file:%s\n", lua_tostring(L, -1));
 }
 }

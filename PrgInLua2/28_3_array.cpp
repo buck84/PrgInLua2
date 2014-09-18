@@ -126,6 +126,19 @@ int luaopen_array(lua_State *L)
 	return 1;
 }
 
+/*
+28_3.lua
+
+a = array.new(1000)
+print(a)
+print(a:size())
+for i=1,1000 do
+    a:set(i,i%5==0)
+end
+print(a:get(10))
+print(a:get(11))
+
+*/
 void test28_3(lua_State *L)
 {
 	luaopen_array(L);
