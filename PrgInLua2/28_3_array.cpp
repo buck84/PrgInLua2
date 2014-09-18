@@ -20,6 +20,8 @@ extern "C" {
 }
 
 #include <limits.h>
+
+namespace luabook_28_3 {
 #define BITS_PER_WORD (CHAR_BIT*sizeof(unsigned int))
 #define I_WORD(i) ((unsigned int)(i)/BITS_PER_WORD)
 #define I_BIT(i) (1<<((unsigned int)(i)%BITS_PER_WORD))
@@ -86,8 +88,7 @@ static int getarray(lua_State *L)
 
 static int getsize(lua_State *L)
 {
-	NumArray *a = (NumArray*)lua_touserdata(L, 1);
-	luaL_argcheck(L, a!=NULL, 1, "'array' expected");
+	NumArray *a = checkarray(L);
 	lua_pushinteger(L, a->size);
 	return 1;
 }
@@ -125,53 +126,12 @@ int luaopen_array(lua_State *L)
 	return 1;
 }
 
-// ¥Ú”°∂—’ª
-void stackDump(lua_State *L)
+void test28_3(lua_State *L)
 {
-	int i;
-	int top = lua_gettop(L);
-	for (i=1; i<=top; i++)
-	{
-		int t = lua_type(L, i);
-		switch(t)
-		{
-		case LUA_TSTRING:
-			{
-				printf("'%s'", lua_tostring(L, i));
-				break;
-			}
-		case LUA_TBOOLEAN:
-			{
-				printf(lua_toboolean(L, i) ? "true" : "false");
-				break;
-			}
-		case LUA_TNUMBER:
-			{
-				printf("%g", lua_tonumber(L, i));
-				break;
-			}
-		default:
-			{
-				printf("%s", lua_typename(L, t));
-				break;
-			}
-			printf(" ");
-		}
-		printf("\n");
-	}
-	printf("\n");
+	luaopen_array(L);
+	
+	if(luaL_loadfile(L, "28_3.lua") || lua_pcall(L, 0, 0, 0))
+		printf("cannot run config. file:%s\n", lua_tostring(L, -1));
 }
 
-// main
-int main()
-{
-	lua_State *L = luaL_newstate();
-	luaL_openlibs(L);
-	
-	luaopen_array(L);
-	if(luaL_loadfile(L, "func.lua") || lua_pcall(L, 0, 0, 0))
-		printf("run func.lua error");
-
-	lua_close(L);
-	return 0;
 }

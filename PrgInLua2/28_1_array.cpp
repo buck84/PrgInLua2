@@ -18,6 +18,8 @@ extern "C" {
 }
 
 #include <limits.h>
+
+namespace luabook_28_1 {
 #define BITS_PER_WORD (CHAR_BIT*sizeof(unsigned int))
 #define I_WORD(i) ((unsigned int)(i)/BITS_PER_WORD)
 #define I_BIT(i) (1<<((unsigned int)(i)%BITS_PER_WORD))
@@ -101,4 +103,5 @@ void test28_1(lua_State *L)
 	
 	if(luaL_loadfile(L, "28_1.lua") || lua_pcall(L, 0, 0, 0))
 		printf("cannot run config. file:%s\n", lua_tostring(L, -1));
+}
 }

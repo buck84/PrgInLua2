@@ -15,6 +15,9 @@
     <ClCompile Include="25.cpp" />
     <ClCompile Include="26.cpp" />
     <ClCompile Include="27.cpp" />
+    <ClCompile Include="28_1_array.cpp" />
+    <ClCompile Include="28_2_array.cpp" />
+    <ClCompile Include="28_3_array.cpp" />
     <ClCompile Include="global.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="tolua_event.c" />

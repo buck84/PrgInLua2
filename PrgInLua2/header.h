@@ -19,4 +19,14 @@ extern void testMapFunc(lua_State *L);
 extern void testSplitFunc(lua_State *L);
 
 // 28
+namespace luabook_28_1 {
 extern void test28_1(lua_State *L);
+}
+
+namespace luabook_28_2 {
+extern void test28_2(lua_State *L);
+}
+
+namespace luabook_28_3 {
+extern void test28_3(lua_State *L);
+}
