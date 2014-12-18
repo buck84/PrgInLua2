@@ -30,3 +30,5 @@ extern void test28_2(lua_State *L);
 namespace luabook_28_3 {
 extern void test28_3(lua_State *L);
 }
+
+extern void CommonTest(lua_State *L);
