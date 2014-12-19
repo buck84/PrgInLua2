@@ -19,6 +19,7 @@
     <ClCompile Include="28_2_array.cpp" />
     <ClCompile Include="28_3_array.cpp" />
     <ClCompile Include="ComonTest.cpp" />
+    <ClCompile Include="28_4_array.cpp" />
     <ClCompile Include="global.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="tolua_event.c" />

@@ -29,8 +29,8 @@ int main()
 	//luabook_28_1::test28_1(L);
 	//luabook_28_2::test28_2(L);
 	//luabook_28_3::test28_3(L);
+	//luabook_28_4::test28_4(L);
 	CommonTest(L);
-
 
 	lua_close(L);
 	return 0;
