@@ -15,22 +15,16 @@
     <ClCompile Include="25.cpp" />
     <ClCompile Include="26.cpp" />
     <ClCompile Include="27.cpp" />
+    <ClCompile Include="27_3.cpp" />
     <ClCompile Include="28_1_array.cpp" />
     <ClCompile Include="28_2_array.cpp" />
     <ClCompile Include="28_3_array.cpp" />
     <ClCompile Include="28_4_array.cpp" />
     <ClCompile Include="global.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="tolua_event.c" />
-    <ClCompile Include="tolua_is.c" />
-    <ClCompile Include="tolua_map.c" />
-    <ClCompile Include="tolua_push.c" />
-    <ClCompile Include="tolua_to.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="header.h" />
-    <ClInclude Include="tolua++.h" />
-    <ClInclude Include="tolua_event.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{3BE48B86-B757-44C0-8872-4C6236F2625D}</ProjectGuid>

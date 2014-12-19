@@ -26,10 +26,13 @@ int main()
 	//testCFunc(L);			// 26.1
 	//testMapFunc(L);		// 27.1
 	//testSplitFunc(L);		// 27.2
+	//testStateInC(L);		// 27.3
 	//luabook_28_1::test28_1(L);
 	//luabook_28_2::test28_2(L);
 	//luabook_28_3::test28_3(L);
-	luabook_28_4::test28_4(L);
+	//luabook_28_4::test28_4(L);
+	//dumpState(L);
+	CommonTest(L);
 
 
 	lua_close(L);

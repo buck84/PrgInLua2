@@ -10,6 +10,7 @@ extern "C" {
 }
 #include <math.h>
 
+//对一个数组中的所有元素应用一个给定函数
 static int l_map(lua_State *L)
 {
 	int i, n;

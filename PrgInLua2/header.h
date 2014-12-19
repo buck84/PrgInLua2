@@ -2,8 +2,10 @@
 */
 
 // common
+extern void dumpState(lua_State *L);
 extern void stackDump(lua_State *L);
 extern void call_va(lua_State *L, const char *func, const char *sig, ...);
+extern void CommonTest(lua_State *L);
 
 // 25
 extern void testTable(lua_State *L);
@@ -17,6 +19,7 @@ extern void testCFunc(lua_State *L);
 // 27
 extern void testMapFunc(lua_State *L);
 extern void testSplitFunc(lua_State *L);
+extern void testStateInC(lua_State *L);
 
 // 28
 namespace luabook_28_1 {

@@ -158,8 +158,13 @@ void test28_4(lua_State *L)
 {
 	luaopen_array(L);
 	
-	if(luaL_loadfile(L, "28_4_2.lua") || lua_pcall(L, 0, 0, 0))
+	if(luaL_loadfile(L, "28_4_2.lua"))
 		printf("cannot run config. file:%s\n", lua_tostring(L, -1));
+	
+	if(lua_pcall(L, 0, 0, 0))
+		printf("cannot run config. file:%s\n", lua_tostring(L, -1));
+//	if(luaL_loadfile(L, "28_4_2.lua") || lua_pcall(L, 0, 0, 0))
+//		printf("cannot run config. file:%s\n", lua_tostring(L, -1));
 }
 
 }
