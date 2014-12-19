@@ -34,7 +34,6 @@ int main()
 	//dumpState(L);
 	CommonTest(L);
 
-
 	lua_close(L);
 	return 0;
 }
