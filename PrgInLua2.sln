@@ -9,6 +9,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "LuaInterpreter", "LuaInterp
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ToLuaPP", "ToLuaPP\ToLuaPP.vcxproj", "{A0F57313-A93C-46E1-961B-5FE3ADE24DB4}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DynamicLib", "DynamicLib\DynamicLib.vcxproj", "{36C17E32-0333-4C59-9865-D4E56EC355C3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -59,6 +61,16 @@ Global
 		{A0F57313-A93C-46E1-961B-5FE3ADE24DB4}.Release|Mixed Platforms.Build.0 = Release|Win32
 		{A0F57313-A93C-46E1-961B-5FE3ADE24DB4}.Release|Win32.ActiveCfg = Release|Win32
 		{A0F57313-A93C-46E1-961B-5FE3ADE24DB4}.Release|Win32.Build.0 = Release|Win32
+		{36C17E32-0333-4C59-9865-D4E56EC355C3}.Debug|Any CPU.ActiveCfg = Debug|Win32
+		{36C17E32-0333-4C59-9865-D4E56EC355C3}.Debug|Mixed Platforms.ActiveCfg = Debug|Win32
+		{36C17E32-0333-4C59-9865-D4E56EC355C3}.Debug|Mixed Platforms.Build.0 = Debug|Win32
+		{36C17E32-0333-4C59-9865-D4E56EC355C3}.Debug|Win32.ActiveCfg = Debug|Win32
+		{36C17E32-0333-4C59-9865-D4E56EC355C3}.Debug|Win32.Build.0 = Debug|Win32
+		{36C17E32-0333-4C59-9865-D4E56EC355C3}.Release|Any CPU.ActiveCfg = Release|Win32
+		{36C17E32-0333-4C59-9865-D4E56EC355C3}.Release|Mixed Platforms.ActiveCfg = Release|Win32
+		{36C17E32-0333-4C59-9865-D4E56EC355C3}.Release|Mixed Platforms.Build.0 = Release|Win32
+		{36C17E32-0333-4C59-9865-D4E56EC355C3}.Release|Win32.ActiveCfg = Release|Win32
+		{36C17E32-0333-4C59-9865-D4E56EC355C3}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
