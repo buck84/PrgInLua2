@@ -32,7 +32,8 @@ int main()
 	//luabook_28_3::test28_3(L);
 	//luabook_28_4::test28_4(L);
 	//dumpState(L);
-	CommonTest(L);
+	//CommonTest(L);
+	luabook_29_1::luaDirTest(L);
 
 	lua_close(L);
 	return 0;
