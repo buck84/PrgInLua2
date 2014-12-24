@@ -1,18 +1,9 @@
 /**lua程序设计2nd源代码
-lua test code:
-a = array.new(1000)
-print(a)
-print(array.size(a))
-for i=1,1000 do
-	array.set(a, i, i%5==0)
-end
-print(array.get(a,10))
+
 */
 #include <stdio.h>
 #include <string.h>
 #include <stdarg.h>
-
-#include <Windows.h>
 
 extern "C" {
 #include "lua.h"
@@ -22,105 +13,160 @@ extern "C" {
 
 #include <limits.h>
 #include "header.h"
+#include "expat.h"
 
-namespace luabook_29_1 {
+namespace luabook_29 {
+typedef struct lxp_userdata{
+	lua_State *L;
+	XML_Parser parser;
+} lxp_userdata;
 
-static int dir_iter(lua_State *L);
+static void f_StartElement (void *ud, const char *name, const char **atts);
+static void f_CharData (void *ud, const char *s, int len);
+static void f_EndElement (void *ud, const char *name);
 
-static int l_dir(lua_State *L)
+static int lxp_make_parser (lua_State *L)
 {
-	HANDLE *h = (HANDLE*)lua_newuserdata(L, sizeof(HANDLE*));
-	WIN32_FIND_DATA FindFileData;
-	const char *path = luaL_checkstring(L, 1);
-	char fname[MAX_PATH];
-	sprintf(fname, "%s\\*", path);
-	*h = FindFirstFile(fname, &FindFileData);
+	XML_Parser p;
+	lxp_userdata *xpu;
 
-	if(*h==INVALID_HANDLE_VALUE)
-		luaL_error(L, "cannot open %s", path);
+	xpu = (lxp_userdata*)lua_newuserdata(L, sizeof(lxp_userdata));
+	xpu->parser = NULL;
 
-	luaL_getmetatable(L, "LuaBook.dir");
+	luaL_getmetatable(L, "Expat");
 	lua_setmetatable(L, -2);
 
-	lua_pushcclosure(L, dir_iter, 1);
+	p = xpu->parser = XML_ParserCreate(NULL);
+	if (!p)
+		luaL_error(L, "XML_ParserCreate failed");
+
+	luaL_checktype(L, 1, LUA_TTABLE);
+	lua_pushvalue(L, 1);
+	lua_setfenv(L, -2);
+
+	XML_SetUserData(p, xpu);
+	XML_SetElementHandler(p, f_StartElement, f_EndElement);
+	XML_SetCharacterDataHandler(p, f_CharData);
+	
 	return 1;
 }
 
-static int dir_iter(lua_State *L)
+static int lxp_parse (lua_State *L)
 {
-	HANDLE *h = (HANDLE*)lua_touserdata(L, lua_upvalueindex(1));
-	if(*h==0 || *h==INVALID_HANDLE_VALUE)
-		return 0;
-	WIN32_FIND_DATA FindFileData;
-	if (FindNextFile(*h, &FindFileData) != 0)
+	int status;
+	size_t len;
+	const char *s;
+	lxp_userdata *xpu;
+
+	xpu = (lxp_userdata *)luaL_checkudata(L, 1, "Expat");
+	s = luaL_optlstring(L, 2, NULL, &len);
+
+	lua_settop(L, 2);
+	lua_getfenv(L, 1);
+	xpu->L = L;
+
+	status = XML_Parse(xpu->parser, s, (int)len, s==NULL);
+
+	lua_pushboolean(L, status);
+	return 1;
+}
+
+static void f_CharData (void *ud, const char *s, int len)
+{
+	lxp_userdata *xpu = (lxp_userdata*)ud;
+	lua_State *L = xpu->L;
+
+	lua_getfield(L, 3, "CharacterData");
+	if (lua_isnil(L, -1))
 	{
-		lua_pushstring(L, FindFileData.cFileName);
-		return 1;
-	}
-
-	return 0;
-}
-
-static int dir_gc(lua_State *L)
-{
-	HANDLE *h = (HANDLE*)lua_touserdata(L, 1);
-	if(*h==0 || *h==INVALID_HANDLE_VALUE)
-		return 0;
-
-	FindClose(*h);
-	return 0;
-}
-
-int luaopen_dir(lua_State *L)
-{
-	luaL_newmetatable(L, "LuaBook.dir");
-	lua_pushstring(L, "__gc");
-	lua_pushcfunction(L, dir_gc);
-	lua_settable(L, -3);
-
-	lua_pushcfunction(L, l_dir);
-	lua_setglobal(L, "dir");
-
-	return 0;
-}
-
-// 用c++代码实现遍历当前目录
-void ListFilesInDir()
-{
-	WIN32_FIND_DATA FindFileData;
-	HANDLE hFind = INVALID_HANDLE_VALUE;
-	DWORD dwError;
-	LPTSTR DirSpec;
-	size_t length_of_arg;
-	INT retval;
-
-	// Find the first file in the directory.
-	hFind = FindFirstFile(".\\*", &FindFileData);
-
-	if (hFind == INVALID_HANDLE_VALUE) 
-	{
-		printf("FindFirstFile error\n");
+		lua_pop(L, 1);
 		return;
-	} 
-	else 
-	{
-		// List all the other files in the directory.
-		while (FindNextFile(hFind, &FindFileData) != 0) 
-		{
-			printf("Next file name is: %s\n", FindFileData.cFileName);
-		}
-
-		dwError = GetLastError();
-		FindClose(hFind);
 	}
+
+	lua_pushvalue(L, 1);
+	lua_pushlstring(L, s, len);
+	lua_call(L, 2, 0);
 }
 
-void luaDirTest(lua_State *L)
+static void f_EndElement (void *ud, const char *name)
 {
-	//ListFilesInDir();
-	//return;
-	luaopen_dir(L);
-	if(luaL_loadfile(L, "part4\\29_1.lua") || lua_pcall(L, 0, 0, 0))
+	lxp_userdata *xpu = (lxp_userdata*)ud;
+	lua_State *L = xpu->L;
+	lua_getfield(L, 3, "EndElement");
+	if (lua_isnil(L, -1))
+	{
+		lua_pop(L, 1);
+		return;
+	}
+
+	lua_pushvalue(L, 1);
+	lua_pushstring(L, name);
+	lua_call(L, 2, 0);
+}
+
+static void f_StartElement (void *ud, const char *name, const char **atts)
+{
+	lxp_userdata *xpu = (lxp_userdata*)ud;
+	lua_State *L = xpu->L;
+
+	lua_getfield(L, 3, "StartElement");
+	if (lua_isnil(L, -1))
+	{
+		lua_pop(L, 1);
+		return;
+	}
+
+	lua_pushvalue(L, 1);
+	lua_pushstring(L, name);
+
+	lua_newtable(L);
+	for (; *atts; atts+=2)
+	{
+		lua_pushstring(L, *(atts+1));
+		lua_setfield(L, -2, *atts);
+	}
+
+	lua_call(L, 3, 0);
+}
+
+static int lxp_close (lua_State *L)
+{
+	lxp_userdata *xpu = (lxp_userdata*)luaL_checkudata(L, 1, "Expat");
+
+	if (xpu->parser)
+		XML_ParserFree(xpu->parser);
+	xpu->parser = NULL;
+	return 0;
+}
+
+static const struct luaL_Reg lxp_meths[] = {
+	{"parse", lxp_parse},
+	{"close", lxp_close},
+	{"__gc", lxp_close},
+	{NULL, NULL},
+};
+
+static const struct luaL_Reg lxp_funcs[] = {
+	{"new", lxp_make_parser},
+	{NULL, NULL},
+};
+
+int luaopen_lxp (lua_State *L) {
+	luaL_newmetatable(L, "Expat");
+	lua_pushvalue(L, -1);
+	lua_setfield(L, -2, "__index");
+
+	luaL_register(L, NULL, lxp_meths);
+
+	luaL_register(L, "lxp", lxp_funcs);
+
+	return 1;
+}
+
+void luaLxpTest (lua_State *L)
+{
+	luaopen_lxp(L);
+	if(luaL_loadfile(L, "part4\\29_2.lua") || lua_pcall(L, 0, 0, 0))
 		printf("cannot run config. file:%s\n", lua_tostring(L, -1));
 
 }

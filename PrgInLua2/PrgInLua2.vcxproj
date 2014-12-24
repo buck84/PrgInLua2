@@ -75,7 +75,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>Lua51.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>libexpat.lib;Lua51.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>..\lib</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>

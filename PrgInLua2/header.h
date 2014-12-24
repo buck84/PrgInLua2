@@ -39,8 +39,9 @@ extern void test28_4(lua_State *L);
 }
 
 // 29
-namespace luabook_29_1 {
+namespace luabook_29 {
 extern void luaDirTest(lua_State *L);
+extern void luaLxpTest(lua_State *L);
 }
 
 extern void CommonTest(lua_State *L);

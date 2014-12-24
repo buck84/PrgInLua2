@@ -33,6 +33,7 @@ void dumpState(lua_State *L)
 // 24.2.2¥Ú”°∂—’ª
 void stackDump(lua_State *L)
 {
+	printf("stackDump Begin ...\n");
 	int i;
 	int top = lua_gettop(L);
 	for (i=1; i<=top; i++)
@@ -64,6 +65,7 @@ void stackDump(lua_State *L)
 		}
 		printf("\n");
 	}
+	printf("stackDump End ...\n");
 	printf("\n");
 }
 
