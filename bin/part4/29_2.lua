@@ -13,7 +13,6 @@ callbacks = {
 		--print("- ", string.rep(" ", count), tagname, "\n")
 	end,
 }
-
 p = lxp.new(callbacks)
 --[[
 for l in io.lines() do
