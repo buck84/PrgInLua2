@@ -21,6 +21,7 @@
     <ClCompile Include="28_3_array.cpp" />
     <ClCompile Include="28_4_array.cpp" />
     <ClCompile Include="29_1.cpp" />
+    <ClCompile Include="29_2.cpp" />
     <ClCompile Include="global.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
