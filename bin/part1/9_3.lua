@@ -5,7 +5,7 @@ function permgenOrg(a, n)
     else
 	for i=1, n do
 	    a[n], a[i] = a[i], a[n]
-	    permgen(a, n-1)
+	    permgenOrg(a, n-1)
 	    a[n], a[i] = a[i], a[n]
 	end
     end
@@ -39,7 +39,7 @@ function permutations(a)
     end
 end
 
---permgenNormal({1,2,3,4})
+--permgenOrg({1,2,3,4})
 ---[[
 for p in permutations{"a", "b", "c"} do
     printResult(p)

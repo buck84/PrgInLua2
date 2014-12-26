@@ -1,3 +1,4 @@
+
 print("9_2_2.lua run begin...")
 function receive(prod)
     print("func receiver start, prod = ", prod)
