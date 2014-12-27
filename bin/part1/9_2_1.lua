@@ -22,9 +22,12 @@ end
 )
 
 q = false
+bb = {}
 while not q do
+	print(bb)
+	bb = {}
 	v = receiver()
 	if(v=='q') then
 	    q = true
 	end
-    end
+end
