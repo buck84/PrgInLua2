@@ -1,3 +1,5 @@
+git@github.com:buck84/PrgInLua2.gig
+prglua2
 PrgInLua2
 =========
 
